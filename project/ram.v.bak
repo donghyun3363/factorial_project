@@ -1,0 +1,29 @@
+module ram(clk, 
+			  cen, 
+			  wen, 
+			  addr, 
+			  din, 
+			  dout);
+
+	input clk, cen, wen;
+	input [7:0] addr;
+	input [31:0] din;
+	output reg [31:0] dout;
+
+	reg [31:0] mem [0:31];
+	
+	always@(posedge clk)
+		begin
+			if(cen & wen) begin
+				mem[addr]<=din;
+				dout<=32'h00;
+			end
+			else if(cen & !wen)	dout<=mem[addr];
+			else if(!cen)			dout<=32'h00;
+			else						dout<=32'hxx;
+		end
+
+endmodule
+
+
+

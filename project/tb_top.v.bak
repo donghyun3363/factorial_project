@@ -1,0 +1,14 @@
+`timescale 1ns/100ps
+module tb_top();
+	reg clk, reset_n;
+	reg M_req, M_wr;
+	reg [7:0] M_address;
+	reg [31:0] M_dout;
+	wire M_grant;
+	wire [31:0] M_din;
+	wire f_interrupt;
+	wire m_interrupt;
+	
+	always #10 clk=~clk;
+
+endmodule

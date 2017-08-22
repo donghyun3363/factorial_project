@@ -1,0 +1,28 @@
+module factorial(clk,
+					  reset_n,
+					  S_sel,
+					  S_wr,
+					  S_address,
+					  S_din,
+					  M_grant,
+					  M_din,
+					  m_interrupt,
+					  S_dout,
+					  M_req,
+					  M_wr,
+					  M_address,
+					  M_dout,
+					  f_interrupt);
+						
+	input clk, reset_n, S_sel, S_wr, M_grant, m_interrupt;
+	input [7:0] S_address;
+	input [31:0] S_din, M_din;
+	output M_req, M_wr, f_interrupt;
+	output [7:0] M_address;
+	output [31:0] S_dout, M_dout;
+	
+	
+	
+					  
+endmodule
+

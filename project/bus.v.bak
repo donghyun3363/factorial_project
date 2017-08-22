@@ -1,0 +1,85 @@
+module bus (clk, reset_n, M0_req, M0_wr, M0_address, M0_dout, M1_req, M1_wr, M1_address, M1_dout, S0_dout, S1_dout, S2_dout, M0_grant, M1_grant, M_din, S0_sel, S1_sel, S2_sel, S_address, S_wr, S_din);
+	input clk, reset_n, M0_req, M0_wr, M1_req, M1_wr;
+	input [7:0] M0_address, M1_address;
+	input [31:0] M0_dout, M1_dout, S0_dout, S1_dout, S2_dout;
+	output M0_grant, M1_grant, S0_sel, S1_sel, S2_sel, S_wr;
+	reg S0_sel, S1_sel, S2_sel, S_wr;
+	output reg [7:0] S_address;
+	output reg [31:0] S_din, M_din;
+	
+	wire [2:0] w_S;
+	
+	always@(M0_wr, M1_wr)
+		begin
+			case(M0_grant)
+				1'b0	:	S_wr=M1_wr;
+				1'b1	:	S_wr=M0_wr;
+			endcase
+		end
+		
+	always@(M0_address, M1_address)
+		begin
+			case(M0_grant)
+				1'b0	:	S_address=M1_address;
+				1'b1	:	S_address=M0_address;
+			endcase
+		end
+		
+	always@(M0_address, M1_address)
+		begin
+			case(M0_grant)
+				1'b0	:	S_din=M1_dout;
+				1'b1	:	S_din=M0_dout;
+			endcase
+		end
+	
+	always@(S0_dout, S1_dout, S2_dout)
+		begin
+			case(w_S)
+				3'b001	:	M_din=S0_dout;
+				3'b010	:	M_din=S1_dout;
+				3'b100	:	M_din=S2_dout;
+				default	:	M_din=32'h00;
+			endcase
+		end
+	
+	wire [2:0] upper;
+	assign Upper_3bit=S_address[7:5];
+	
+	initial
+		begin
+			if(Upper_3bit==3'b001)	{S2_sel, S1_sel, S0_sel}=3'b001; 
+			else if(Upper_3bit==3'b010)	{S2_sel, S1_sel, S0_sel}=3'b010;
+			else if(Upper_3bit==3'b100)	{S2_sel, S1_sel, S0_sel}=3'b100; 
+			else {S2_sel, S1_sel, S0_sel}=3'b000; 
+		end
+		
+	wire w_M0_req, w_M1_req;
+	wire need_fair, state_fair, eor_fair;
+	wire next_grant, current_grant;
+	wire [3:0] req_4bit;
+	
+	assign req_4bit={w_M0_req, w_M1_req, M0_req, M1_req};
+	
+	initial
+		begin
+			if(req_4bit==4'b0011)	need_fair=1'b1;
+			else	need_fair=1'b0;
+		end
+		
+	assign eor_fair=need_fair^state_fair;
+	
+	always@(M0_req, M1_req)
+		begin
+			if()
+		end
+	
+	_register3_r	U0_register3_r(.clk(clk), .reset_n(reset_n), .d({S2_sel, S1_sel, S0_sel}), .q(w_S));
+	_dff_r			U1_dff_r(.clk(clk), .reset_n(reset_n), .d(M0_req), .q(w_M0_req));
+	_dff_r			U2_dff_r(.clk(clk), .reset_n(reset_n), .d(M1_req), .q(w_M1_req));
+	_dff_r			U3_dff_r(.clk(clk), .reset_n(reset_n), .d(eor_fair), .q(state_fair));
+	_dff_r			U3_dff_r(.clk(clk), .reset_n(reset_n), .d(next_grant), .q(current_grant));
+	
+	
+	
+endmodule

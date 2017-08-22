@@ -1,0 +1,30 @@
+module cla64(a, b, ci, s, co);
+
+input [63:0] a, b;	//declare two 32-bit input variables
+input ci;            //declare 1-bit carry in variable
+output [63:0] s;     //declare 32-bit output sum variable
+output co;           //declare 1-bit carry out variable
+
+wire [1:0] c2, c3, c4, c5, c6, c7;	//declare wire carrys
+wire [2:0] c1;
+
+//instace 4-Bit Carry Look Ahead Adder(cla4 module) with three input variables and output variables 
+cla4 U0_cla4(.a(a[3:0]), .b(b[3:0]), .ci(ci), .s(s[3:0]), .co(c1[0]));
+cla4 U1_cla4(.a(a[7:4]), .b(b[7:4]), .ci(c1[0]), .s(s[7:4]), .co(c2[0]));
+cla4 U2_cla4(.a(a[11:8]), .b(b[11:8]), .ci(c2[0]), .s(s[11:8]), .co(c3[0]));
+cla4 U3_cla4(.a(a[15:12]), .b(b[15:12]), .ci(c3[0]), .s(s[15:12]), .co(c4[0]));
+cla4 U4_cla4(.a(a[19:16]), .b(b[19:16]), .ci(c4[0]), .s(s[19:16]), .co(c5[0]));
+cla4 U5_cla4(.a(a[23:20]), .b(b[23:20]), .ci(c5[0]), .s(s[23:20]), .co(c6[0]));
+cla4 U6_cla4(.a(a[27:24]), .b(b[27:24]), .ci(c6[0]), .s(s[27:24]), .co(c7[0]));
+cla4 U7_cla4(.a(a[31:28]), .b(b[31:28]), .ci(c7[0]), .s(s[31:28]), .co(c1[1]));
+
+cla4 U8_cla4(.a(a[35:32]), .b(b[35:32]), .ci(c1[1]), .s(s[35:32]), .co(c2[1]));
+cla4 U9_cla4(.a(a[39:36]), .b(b[39:36]), .ci(c2[1]), .s(s[39:36]), .co(c3[1]));
+cla4 U10_cla4(.a(a[43:40]), .b(b[43:40]), .ci(c3[1]), .s(s[43:40]), .co(c4[1]));
+cla4 U11_cla4(.a(a[47:44]), .b(b[47:44]), .ci(c4[1]), .s(s[47:44]), .co(c5[1]));
+cla4 U12_cla4(.a(a[51:48]), .b(b[51:48]), .ci(c5[1]), .s(s[51:48]), .co(c6[1]));
+cla4 U13_cla4(.a(a[55:52]), .b(b[55:52]), .ci(c6[1]), .s(s[55:52]), .co(c7[1]));
+cla4 U14_cla4(.a(a[59:56]), .b(b[59:56]), .ci(c7[1]), .s(s[59:56]), .co(c1[2]));
+cla4 U15_cla4(.a(a[63:60]), .b(b[63:60]), .ci(c1[2]), .s(s[63:60]), .co(co));
+
+endmodule
