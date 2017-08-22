@@ -3,8 +3,8 @@
 //FILE : top.v
 //TESTBENCH : tb_top.v
 //ORGANIZATION : Kwangwoon Univ. Computer Engineering
-//STUDENT ID : 2009720054
-//STUDENT NAME : HyeonKi Lim(ddkook12@daum.net)
+//STUDENT ID : 2010720149
+//STUDENT NAME : DONGHYUN LEE
 //PLATFORM : Windows 8
 //SIMULATOR : ModelSim-Altera 10.1d
 //COMPILER : Altera Quartus II 13.0 SP1
